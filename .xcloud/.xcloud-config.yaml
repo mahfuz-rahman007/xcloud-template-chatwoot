@@ -137,8 +137,7 @@ resources:
 
 credentials:
   type: web
-  template:
-    url: 'https://{{ domain }}'
+  copyable: 'https://{{ domain }}'
   display:
     -
       label: URL

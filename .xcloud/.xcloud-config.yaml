@@ -136,18 +136,13 @@ resources:
   sidekiq_concurrency: '10'
 
 credentials:
-  type: web
-  copyable: 'https://{{ domain }}'
   display:
     -
       label: URL
       value: 'https://{{ domain }}'
-    -
-      label: Note
-      value: 'The first signup at this URL becomes the admin account. Set ENABLE_ACCOUNT_SIGNUP=false in .env after onboarding to lock new registrations.'
 
 post_install:
-  message: 'Chatwoot is ready at https://{{ domain }} — visit it and create your account; the first signup becomes the admin.'
+  message: 'Chatwoot is ready at https://{{ domain }}. The first signup becomes the admin account — set ENABLE_ACCOUNT_SIGNUP=false in /var/www/{{ site_name }}/.env after onboarding to lock new registrations.'
 
 lifecycle:
   post_install:

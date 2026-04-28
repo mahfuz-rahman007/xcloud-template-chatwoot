@@ -1,5 +1,5 @@
 x-base: &base
-  image: chatwoot/chatwoot:{{ app_version | default:"v3.16.0" }}
+  image: chatwoot/chatwoot:v3.16.0
   env_file: .env
   restart: always
   volumes:
@@ -8,12 +8,12 @@ x-base: &base
 services:
   rails:
     <<: *base
-    container_name: chatwoot-rails-{{ site_name }}
+    container_name: chatwoot-rails-${SITE_NAME}
     depends_on:
       - postgres
       - redis
     ports:
-      - '127.0.0.1:{{ ports.rails }}:3000'
+      - '127.0.0.1:${PORT_RAILS}:3000'
     environment:
       - NODE_ENV=production
       - RAILS_ENV=production
@@ -21,11 +21,11 @@ services:
     entrypoint: docker/entrypoints/rails.sh
     command: ['bundle', 'exec', 'rails', 's', '-p', '3000', '-b', '0.0.0.0']
     networks:
-      - {{ network_name | default:"xcloud-network" }}
+      - xcloud-network
 
   sidekiq:
     <<: *base
-    container_name: chatwoot-sidekiq-{{ site_name }}
+    container_name: chatwoot-sidekiq-${SITE_NAME}
     depends_on:
       - postgres
       - redis
@@ -35,30 +35,30 @@ services:
       - INSTALLATION_ENV=docker
     command: ['bundle', 'exec', 'sidekiq', '-C', 'config/sidekiq.yml']
     networks:
-      - {{ network_name | default:"xcloud-network" }}
+      - xcloud-network
 
   postgres:
     image: pgvector/pgvector:pg16
-    container_name: chatwoot-postgres-{{ site_name }}
+    container_name: chatwoot-postgres-${SITE_NAME}
     restart: always
     environment:
       - POSTGRES_DB=chatwoot
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD={{ _generated.postgres_password }}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - {{ network_name | default:"xcloud-network" }}
+      - xcloud-network
 
   redis:
     image: redis:alpine
-    container_name: chatwoot-redis-{{ site_name }}
+    container_name: chatwoot-redis-${SITE_NAME}
     restart: always
-    command: 'redis-server --requirepass {{ _generated.redis_password }}'
+    command: 'redis-server --requirepass ${REDIS_PASSWORD}'
     volumes:
       - redis_data:/data
     networks:
-      - {{ network_name | default:"xcloud-network" }}
+      - xcloud-network
 
 volumes:
   storage_data:
@@ -66,5 +66,5 @@ volumes:
   redis_data:
 
 networks:
-  {{ network_name | default:"xcloud-network" }}:
+  xcloud-network:
     external: true

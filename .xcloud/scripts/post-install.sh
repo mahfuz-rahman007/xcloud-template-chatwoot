@@ -11,7 +11,7 @@
 # applies any pending migrations).
 set -euo pipefail
 
-cd "/var/www/{{ site_name }}"
+cd "/var/www/${SITE_NAME}"
 
 echo "[chatwoot] waiting for postgres to accept connections..."
 attempts=0
@@ -27,4 +27,4 @@ done
 echo "[chatwoot] running db:chatwoot_prepare (migrations + seed)..."
 docker compose run --rm rails bundle exec rails db:chatwoot_prepare
 
-echo "[chatwoot] post-install complete — visit https://{{ domain }} to create your admin account."
+echo "[chatwoot] post-install complete — visit https://${DOMAIN} to create your admin account."

@@ -26,8 +26,8 @@ tags:
   - omnichannel
 
 files:
-  compose: docker-compose.yml.tpl
-  env: .env.tpl
+  compose: docker-compose.yml
+  env: .env
 
 requirements:
   min_ram_mb: 4096
@@ -139,10 +139,10 @@ credentials:
   display:
     -
       label: URL
-      value: 'https://{{ domain }}'
+      value: 'https://${DOMAIN}'
 
 post_install:
-  message: 'Chatwoot is ready at https://{{ domain }}. The first signup becomes the admin account — set ENABLE_ACCOUNT_SIGNUP=false in /var/www/{{ site_name }}/.env after onboarding to lock new registrations.'
+  message: 'Chatwoot is ready at https://${DOMAIN}. The first signup becomes the admin account — set ENABLE_ACCOUNT_SIGNUP=false in /var/www/${SITE_NAME}/.env after onboarding to lock new registrations.'
 
 lifecycle:
   post_install:

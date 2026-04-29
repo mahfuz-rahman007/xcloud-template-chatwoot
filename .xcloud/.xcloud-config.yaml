@@ -41,17 +41,14 @@ ports:
     description: 'Chatwoot HTTP'
     container_port: 3000
     proxy: true
-    visibility: public
   postgres:
     description: 'PostgreSQL'
     container_port: 5432
     proxy: false
-    visibility: private
   redis:
     description: 'Redis'
     container_port: 6379
     proxy: false
-    visibility: private
 
 fields:
   -
@@ -130,10 +127,6 @@ volumes:
     - storage_data
     - postgres_data
     - redis_data
-
-resources:
-  rails_max_threads: '5'
-  sidekiq_concurrency: '10'
 
 credentials:
   display:
